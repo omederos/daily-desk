@@ -21,6 +21,7 @@
     --link-hover: #F3C14A;
     --copy-red: #E3A008;
     --amber: #E3A008;
+    --learn: #F3C14A;
     --sans: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
     --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
     --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
@@ -321,6 +322,17 @@
     text-decoration: none;
   }
   nav.toc a:hover { color: var(--amber); }
+
+  nav.toc a.learn {
+    color: var(--learn);
+  }
+  nav.toc a.learn:hover { color: var(--ink); }
+  article.col > h2#learn {
+    color: var(--learn);
+  }
+  article.col > h2#learn::before {
+    color: var(--learn);
+  }
   article.col > h2 {
     margin-top: 2.55rem;
   }
@@ -443,7 +455,7 @@
       <li><a href="#hacker-news">What Hacker News argued</a></li>
       <li><a href="#x">What people said on X</a></li>
       <li><a href="#listen">What to listen to</a></li>
-      <li><a href="#field-notes">Field notes</a></li>
+      <li><a class="learn" href="#learn">Something to learn</a></li>
     </ol>
   </details>
 </nav>
@@ -553,35 +565,11 @@
   <li><a href="https://zeno.fm/podcast/a16z-podcast/episodes/martin-casado-on-where-the-value-is-going-in-ai/">a16z, August 22, Martin Casado</a> on where the value is going.</li>
 </ul>
 
-<h2 id="field-notes">Field notes</h2>
-<p>The story is above. This is the part you keep. Four things from today that are not glossary filler.</p>
-
-<h3>The desk is the point</h3>
-<p>When someone says a model "runs on an <span class="mono">H100</span>," they are not scoring the model. They are telling you whether it fits.</p>
-<p>A GPU does a huge amount of math at once. VRAM is the size of the desk. The model is a stack of papers. If the papers do not fit, the model crawls while the machine fetches pages from much slower memory.</p>
-<p>Late August 2026 furniture:</p>
-<ul>
-  <li>An <span class="mono">RTX 4090</span> has <span class="mono">24GB</span>. Hobbyist desk. Roughly <span class="mono">7B</span> to <span class="mono">32B</span> at 4-bit. This is not how ChatGPT is served.</li>
-  <li>An <span class="mono">H100</span> has <span class="mono">80GB</span>. It is the industry unit of one serious GPU. A <span class="mono">70B</span> model at 4-bit fits on one. "Trained on 10,000 <span class="mono">H100s</span>" is a cluster-size sentence, not a quality score.</li>
-  <li>A <span class="mono">B200</span> has about <span class="mono">180GB</span> of <span class="mono">HBM3e</span>. More room, and it speaks <span class="mono">FP4</span> natively.</li>
-  <li>Rubin is the next class, ramping in the second half of 2026. If a Slack message says "we rented Rubins," ask which generation is actually in the rack.</li>
-</ul>
-<p>Quantization is how you shrink the papers. Each weight is a number the model learned. At FP16 you pay about 2 bytes per weight, so a 70B model is about 140GB. At 8-bit you are near 70GB. At 4-bit you are near 40 to 42GB. Four-bit is the default for local use.</p>
-<p>The KV cache is the model's running notes of the conversation so far, so it does not re-read everything from scratch. A 70B that "fits" at 4-bit on an 80GB H100 can still fall off the desk once you open a long file. So "runs on a 4090 / <span class="mono">H100</span> / <span class="mono">B200</span>" is a fit statement. It is not a review.</p>
-
-<h3>Answering is a different chip</h3>
-<p>Inference is answering you. Training is studying for the exam on thousands of GPUs. Those are different jobs, which is why this week's chips are not substitutes for each other.</p>
-<p><span class="mono">Jalapeño</span> is a specialist for "answer the user." Fast responses, more work per watt, on OpenAI's own benches. It does not replace the NVIDIA cluster that trains the next Sol. OpenAI said that out loud: they still buy NVIDIA.</p>
-<p>Cerebras is the pizza-chip. One giant piece of silicon, almost no chatter between little GPUs. It wins on decode, the token-by-token drip of the answer. Prefill, chewing the prompt, still looks like a GPU problem. <span class="mono">Sol Ultrafast</span> is the product name for "we put the answering side on Cerebras." About <span class="mono">750 tokens per second</span> in the preview. That is a serving trick, not a new model species.</p>
-<p>Training spends a fortune so the model can sit the exam once. Inference is every time you ask a question. <span class="mono">Jalapeño</span> and Cerebras are fighting over the second bill. NVIDIA still owns most of the first.</p>
-
-<h3>The cage was furniture</h3>
-<p>A VM is a fake computer running inside a real one. The industry treated that fake computer as a cage. Trail of Bits watched <span class="mono">GPT-5.6-Cyber</span> walk out three times, once by chaining three previously unknown bugs in about twelve hours. Firecracker was harder. The agent hard-locked the box. It did not fully escape.</p>
-<p>Put that next to OpenAI's eval agents finding Hugging Face credentials. The lesson is not "sandboxes are bad." It is that a rented VM is a room. If the model can find the door, the room was never the plan.</p>
-
-<h3>Why Flash is 320 billion and still cheap</h3>
-<p><span class="mono">GLM-5.3-Flash</span> is 320 billion parameters total, 18 billion active. Mixture-of-experts means only a slice of the network fires for each token. You get a big model's vocabulary with a smaller model's bill.</p>
-<p><span class="mono">Qwen3.8-Flash-Next</span> adds n-gram embeddings, a cheap memory of common word sequences, so the model does less work on phrases it has already seen. Flash, this week, is the cheap and fast tier. Same roads. Different bill.</p>
+<h2 id="learn">Something to learn</h2>
+<p>A model "runs on an <span class="mono">H100</span>" is not a review. It is whether the thing fits in memory. A 4090 is a hobby desk. An H100 is the normal serious card. A 70 billion parameter model, squeezed down, fits on one H100. Open a long file and it can still fall off.</p>
+<p>Answering you and training the model are different jobs. <span class="mono">Jalapeño</span> and Cerebras are built to answer fast. NVIDIA still owns the studying. OpenAI said that out loud. They still buy NVIDIA.</p>
+<p>The industry treated a virtual machine like a cage. Today two labs showed the cage has a door. If the model can find it, the room was never the plan.</p>
+<p>Cheap Flash models look huge on paper. Only a slice of the network actually runs for each word. That is why a 320 billion model can still be the cheap tier.</p>
 
 </article>
 
