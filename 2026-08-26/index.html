@@ -54,7 +54,6 @@
   .canvas, .site { position: relative; z-index: 1; }
   .wrap,
   .canvas,
-  .col,
   .site-inner,
   footer {
     width: min(38rem, calc(100% - 2.5rem));
@@ -68,7 +67,12 @@
     padding-top: 1.5rem;
     padding-bottom: 3.2rem;
   }
-  .col { max-width: none; }
+  .col {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
   a {
     color: var(--link);
     text-decoration: underline;
@@ -281,9 +285,9 @@
   nav.toc details { margin: 0; }
   nav.toc summary {
     font-family: var(--mono);
-    font-size: 0.6875rem;
+    font-size: 1rem;
     font-weight: 500;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--muted);
     cursor: pointer;
@@ -312,7 +316,7 @@
   nav.toc li { margin: 0 0 0.32rem; }
   nav.toc a {
     font-family: var(--mono);
-    font-size: 0.78rem;
+    font-size: 0.95rem;
     color: var(--ink);
     text-decoration: none;
   }
@@ -373,15 +377,15 @@
   .site nav a:hover { color: var(--ink); }
   .meta {
     font-family: var(--mono);
-    font-size: 0.78rem;
-    line-height: 1.7;
+    font-size: 1rem;
+    line-height: 1.6;
     color: var(--ink);
     margin: 0 0 1.15rem;
   }
   .meta .k {
     color: var(--muted);
     display: inline-block;
-    width: 5.2rem;
+    width: 4.6rem;
   }
   footer { margin-top: 1.4rem; }
   @media print {
@@ -426,7 +430,7 @@
 
 
 <nav class="toc" aria-label="Contents">
-  <details>
+  <details open>
     <summary>Contents</summary>
     <ol>
       <li><a href="#hugging-face-break">The Hugging Face break</a></li>
