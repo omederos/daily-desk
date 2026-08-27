@@ -1,0 +1,17 @@
+{
+  "name": "daily-desk",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "bun@1.4.0",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "publish-static": "bash scripts/publish-static.sh"
+  },
+  "devDependencies": {
+    "astro": "^5.0.0",
+    "typescript": "^5.7.0"
+  }
+}

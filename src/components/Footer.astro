@@ -1,0 +1,11 @@
+---
+import { site } from '../lib/site';
+
+interface Props {
+  variant?: 'home' | 'article';
+}
+
+const { variant = 'article' } = Astro.props;
+const classes = variant === 'home' ? 'note site-foot' : 'note';
+---
+<footer class={classes}>{site.footer}</footer>

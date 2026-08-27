@@ -1,0 +1,51 @@
+---
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site, articleDateLabel, dateId, pageTitleDate, tocFromBody } from '../lib/site';
+
+export async function getStaticPaths() {
+  const briefings = await getCollection('briefings');
+  return briefings.map((entry) => ({
+    params: { date: dateId(entry.data.date) },
+    props: { entry }
+  }));
+}
+
+interface Props {
+  entry: CollectionEntry<'briefings'>;
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+const toc = tocFromBody(entry.body);
+const title = `${site.title}, ${pageTitleDate(entry.data.date)}`;
+---
+<BaseLayout title={title} description={entry.data.blurb} variant="article">
+  <header class="mast">
+    <p class="meta">
+      <span class="k">Date:</span> {articleDateLabel(entry.data.date, entry.data.weekday)}
+    </p>
+    <h1>{entry.data.title}</h1>
+    <div class="lede">
+      <p set:html={entry.data.lede} />
+    </div>
+  </header>
+
+  <nav class="toc" aria-label="Contents">
+    <details open>
+      <summary>Contents</summary>
+      <ol>
+        {toc.map((item) => (
+          <li>
+            <a class={item.learn ? 'learn' : undefined} href={`#${item.id}`}>{item.title}</a>
+          </li>
+        ))}
+      </ol>
+    </details>
+  </nav>
+
+  <article class="col">
+    <Content />
+  </article>
+</BaseLayout>
