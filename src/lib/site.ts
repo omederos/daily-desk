@@ -18,6 +18,15 @@ const MONTHS_LONG = [
   'July', 'August', 'September', 'October', 'November', 'December'
 ];
 
+
+export function monthKey(date: Date): string {
+  return `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, '0')}`;
+}
+
+export function monthHeading(date: Date): string {
+  return `${MONTHS_LONG[date.getUTCMonth()]} ${date.getUTCFullYear()}`;
+}
+
 export function dateId(date: Date): string {
   const y = date.getUTCFullYear();
   const m = String(date.getUTCMonth() + 1).padStart(2, '0');

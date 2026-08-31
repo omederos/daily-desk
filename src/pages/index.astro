@@ -1,32 +1,45 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { site, homeDateLabel, briefingPath } from '../lib/site';
+import { site, homeDateLabel, briefingPath, monthKey, monthHeading } from '../lib/site';
 
 const briefings = (await getCollection('briefings')).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
 );
+
+const months: { key: string; label: string; entries: typeof briefings }[] = [];
+for (const entry of briefings) {
+  const key = monthKey(entry.data.date);
+  const last = months.at(-1);
+  if (!last || last.key !== key) {
+    months.push({ key, label: monthHeading(entry.data.date), entries: [entry] });
+  } else {
+    last.entries.push(entry);
+  }
+}
 ---
 <BaseLayout variant="home">
   <h1>{site.title}</h1>
   <p class="lede">{site.lede}</p>
 
-  <section class="week">
-    <h2>This week</h2>
-    <ol class="days">
-      {briefings.map((entry) => (
-        <li>
-          <a class="row" href={briefingPath(entry.data.date)}>
-            <span class="date">{homeDateLabel(entry.data.date)}<span class="dow">{entry.data.weekday}</span></span>
-            <span>
-              <span class="title">{entry.data.title}</span>
-              <span class="blurb">{entry.data.blurb}</span>
-            </span>
-          </a>
-        </li>
-      ))}
-    </ol>
-  </section>
+  {months.map((month) => (
+    <section class="month">
+      <h2>{month.label}</h2>
+      <ol class="days">
+        {month.entries.map((entry) => (
+          <li>
+            <a class="row" href={briefingPath(entry.data.date)}>
+              <span class="date">{homeDateLabel(entry.data.date)}<span class="dow">{entry.data.weekday}</span></span>
+              <span>
+                <span class="title">{entry.data.title}</span>
+                <span class="blurb">{entry.data.blurb}</span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ol>
+    </section>
+  ))}
 
   <p class="home-note">{site.postedNote}</p>
 </BaseLayout>
